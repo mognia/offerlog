@@ -12,8 +12,10 @@ const EnvSchema = z.object({
     // Used for building absolute links in emails
     APP_BASE_URL: z.string().url(),
 
-    // Used by Resend (Module 1, next chunks)
+    // Used by Resend
     RESEND_API_KEY: z.string().min(1),
+
+    RESEND_FROM: z.string().min(3),
 });
 
 export const env = EnvSchema.parse({
@@ -22,4 +24,6 @@ export const env = EnvSchema.parse({
     SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME,
     APP_BASE_URL: process.env.APP_BASE_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+    RESEND_FROM: process.env.RESEND_FROM,
+
 });
