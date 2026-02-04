@@ -79,5 +79,5 @@ export async function revokeSessionFromCookie() {
         data: { revokedAt: new Date() },
     });
 
-    clearSessionCookie();
+    await clearSessionCookie();
 }
