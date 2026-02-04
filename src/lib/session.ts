@@ -3,7 +3,7 @@ import {prisma} from "@/lib/prisma";
 import {cookies} from "next/headers";
 import {env} from "@/lib/env";
 
-const SESSION_TTL_DAYS = 38;
+const SESSION_TTL_DAYS = 30;
 
 
 function computeExpiry() {
