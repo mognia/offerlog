@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {AuthError, requireUserId} from "@/lib/auth-guard";
+import {AuthError, requireUserId} from "@/lib/auth/auth-guard";
 import {prisma} from "@/lib/prisma";
 
 export async function GET() {

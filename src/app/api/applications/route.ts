@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {requireUserId} from "@/lib/auth-guard";
+import {requireUserId} from "@/lib/auth/auth-guard";
 import {prisma} from "@/lib/prisma";
 import {NextResponse} from "next/server";
 
