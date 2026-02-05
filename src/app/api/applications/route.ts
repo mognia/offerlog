@@ -4,7 +4,7 @@ import {prisma} from "@/lib/prisma";
 import {NextResponse} from "next/server";
 
 const createApplicationSchema = z.object({
-    company: z.string().min(1).max(120),
+    companyName: z.string().min(1).max(120),
     role: z.string().min(1).max(120),
     jobUrl: z.url().optional().or(z.literal("")),
     location: z.string().max(120).optional().or(z.literal("")),
@@ -19,30 +19,36 @@ export async function POST(req: Request) {
     const input = createApplicationSchema.parse(json);
     const now = new Date();
 
-    const created = await prisma.application.create({
-        data: {
-            companyName: input.company.trim(),
-            roleTitle: input.role.trim(),
-            jobUrl: input.jobUrl?.trim() || null,
-            location: input.location?.trim() || null,
-            source: input.source?.trim() || null,
-            notes: input.notes?.trim() || null,
-            status: input.status ?? "OPEN", // logic-critical: default status
-            appliedAt: now,
-            lastActivityAt: now,
-            userId, // security-critical: ownership enforced at write
-        },
-        select: {
-            id: true,
-            companyName: true,
-            roleTitle: true,
-            status: true,
-            appliedAt: true,
-            lastActivityAt: true,
-            createdAt: true
-        },
+    const result = await prisma.$transaction(async (tx) => {
+        const application = await tx.application.create({
+            data: {
+                companyName: input.companyName.trim(),
+                roleTitle: input.role.trim(),
+                jobUrl: input.jobUrl?.trim() || null,
+                location: input.location?.trim() || null,
+                source: input.source?.trim() || null,
+                notes: input.notes?.trim() || null,
+                status: input.status ?? "OPEN",
+                appliedAt: now,
+                lastActivityAt: now,
+                userId,
+            },
+            select: { id: true, companyName: true, roleTitle: true, status: true, createdAt: true },
+        });
+
+        await tx.interviewStage.create({
+            data: {
+                applicationId: application.id,
+                stageType: "APPLIED", // logic-critical
+                title: "Applied",
+                orderIndex: 0,
+            },
+        });
+
+        return application;
     });
-    return NextResponse.json({ok: true, application: created}, {status: 201});
+
+    return NextResponse.json({ok: true, application: result}, {status: 201});
 
 }
 export async function GET(req: Request) {

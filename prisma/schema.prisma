@@ -47,6 +47,19 @@ enum MessageDirection {
   UNKNOWN
 }
 
+enum StageType {
+  APPLIED
+  RECRUITER_SCREEN
+  TECH_SCREEN
+  TAKE_HOME
+  CULTURAL
+  ONSITE
+  HM_CHAT
+  OFFER
+  NEGOTIATION
+  OTHER
+}
+
 // User related Models
 model User {
   id              String    @id @default(cuid())
@@ -143,10 +156,11 @@ model InterviewStage {
   id            String @id @default(cuid())
   applicationId String
 
+  stageType  StageType? // analytics key, optional for backwards-compat
   title      String // Recruiter Screen, Tech Interview, etc
   orderIndex Int // sortable in UI
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
   application Application      @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   events      InterviewEvent[]
