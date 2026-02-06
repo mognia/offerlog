@@ -25,7 +25,8 @@ const patchSchema = z.object({
 export async function PATCH(
     req: Request,
     ctx: { params: Promise<{ id: string; stageId: string }> }
-) {
+)
+{
     const userId = await requireUserId(); // security-critical
     const { id: applicationId, stageId } = await ctx.params;
 

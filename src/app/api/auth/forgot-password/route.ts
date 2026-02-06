@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         },
     });
 
-    const resetUrl = `${env.APP_BASE_URL}/auth/reset-password?token=${rawToken}`;
+    const resetUrl = `${env.APP_BASE_URL}/reset-password?token=${rawToken}`;
 
     const resend = new Resend(env.RESEND_API_KEY);
     await resend.emails.send({

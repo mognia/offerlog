@@ -89,3 +89,66 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
 
     return NextResponse.json({ ok: true, stage: created }, { status: 201 });
 }
+export async function DELETE(req: Request, ctx: { params: Promise<{ id: string }> }) {
+    const userId = await requireUserId();
+    const { id: applicationId } = await ctx.params;
+
+    // stageId comes from query string: ?stageId=...
+    const url = new URL(req.url);
+    const stageId = z.string().min(1).parse(url.searchParams.get("stageId"));
+
+    const app = await prisma.application.findFirst({
+        where: { id: applicationId, userId }, // security-critical
+        select: { id: true, status: true },
+    });
+    if (!app) return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
+
+    const isClosed = app.status === "REJECTED" || app.status === "GHOSTED";
+    if (isClosed) {
+        return NextResponse.json({ ok: false, error: "Closed applications cannot delete stages." }, { status: 409 });
+    }
+
+    const now = new Date();
+
+    try {
+        const result = await prisma.$transaction(async (tx) => {
+            const stage = await tx.interviewStage.findFirst({
+                where: { id: stageId, applicationId },
+                select: { id: true, orderIndex: true, stageType: true },
+            });
+            if (!stage) return { kind: "not_found" as const };
+
+            // keep the system stage
+            if (stage.stageType === "APPLIED") return { kind: "blocked_applied" as const };
+
+            await tx.interviewStage.delete({
+                where: { id: stage.id },
+            });
+
+            // close the gap in ordering
+            await tx.interviewStage.updateMany({
+                where: { applicationId, orderIndex: { gt: stage.orderIndex } },
+                data: { orderIndex: { decrement: 1 } },
+            });
+
+            await tx.application.update({
+                where: { id: applicationId },
+                data: { lastActivityAt: now },
+                select: { id: true },
+            });
+
+            return { kind: "ok" as const };
+        });
+
+        if (result.kind === "not_found") {
+            return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
+        }
+        if (result.kind === "blocked_applied") {
+            return NextResponse.json({ ok: false, error: "APPLIED stage cannot be deleted." }, { status: 409 });
+        }
+
+        return NextResponse.json({ ok: true }, { status: 200 });
+    } catch {
+        return NextResponse.json({ ok: false, error: "Bad request" }, { status: 400 });
+    }
+}
