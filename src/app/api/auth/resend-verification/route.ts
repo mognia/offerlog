@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         },
     });
 
-    const verifyUrl = `${env.APP_BASE_URL}/api/auth/verify-email?token=${rawToken}`;
+    const verifyUrl = `${env.APP_BASE_URL}/verify-email?token=${rawToken}`;
 
     const resend = new Resend(env.RESEND_API_KEY);
     await resend.emails.send({
