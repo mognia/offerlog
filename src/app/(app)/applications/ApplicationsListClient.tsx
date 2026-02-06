@@ -49,7 +49,7 @@ export default function ApplicationsListClient() {
         <div className="space-y-4">
             <div className="flex items-center justify-between gap-3">
                 <h1 className="text-xl font-semibold">Applications</h1>
-                <Button asChild><Link href="/applications/new">New</Link></Button>
+                <Button asChild><Link href="/src/app/(app)/applications/new">New</Link></Button>
             </div>
 
             <div className="flex items-center gap-2">
@@ -63,7 +63,7 @@ export default function ApplicationsListClient() {
 
             <div className="divide-y rounded-md border">
                 {items.map((a) => (
-                    <Link key={a.id} href={`/applications/${a.id}`} className="block p-4 hover:bg-muted/50">
+                    <Link key={a.id} href={`/src/app/(app)/applications/${a.id}`} className="block p-4 hover:bg-muted/50">
                         <div className="flex items-center justify-between gap-3">
                             <div>
                                 <div className="font-medium">{a.companyName} , {a.roleTitle}</div>
