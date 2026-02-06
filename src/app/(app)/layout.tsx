@@ -1,6 +1,14 @@
 import Link from "next/link";
+import {isSessionValid} from "@/lib/auth/validate-session";
+import {redirect} from "next/navigation";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({ children }: { children: React.ReactNode }) {
+    const sessionValid = await isSessionValid();
+
+    if (!sessionValid.ok) {
+        redirect("/login");
+    }
+
     return (
         <div className="min-h-[100dvh] bg-muted/30">
             <header className="border-b bg-background">
