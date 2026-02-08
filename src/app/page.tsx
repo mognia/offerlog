@@ -56,30 +56,30 @@ export default function Home() {
                 </section>
 
                 {/* The "Dashboard Preview" Placeholder */}
-                <section className="px-4 pb-24">
-                    <div className="max-w-6xl mx-auto rounded-2xl border bg-card/50 shadow-2xl overflow-hidden aspect-video relative group border-primary/10">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-transparent pointer-events-none" />
-                        {/* Mock Dashboard UI UI Elements */}
-                        <div className="p-8 space-y-6 opacity-80 group-hover:opacity-100 transition-opacity">
-                            <div className="flex items-center justify-between border-b pb-4">
-                                <div className="h-4 w-32 bg-muted rounded animate-pulse" />
-                                <div className="flex gap-2">
-                                    <div className="h-8 w-8 bg-muted rounded-full" />
-                                    <div className="h-8 w-8 bg-muted rounded-full" />
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-4 gap-4">
-                                {[1,2,3,4].map(i => (
-                                    <div key={i} className="h-24 border rounded-xl bg-background/50 p-4 space-y-2">
-                                        <div className="h-2 w-12 bg-muted rounded" />
-                                        <div className="h-6 w-16 bg-muted rounded" />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="h-64 border rounded-xl bg-background/50 w-full" />
-                        </div>
-                    </div>
-                </section>
+                {/*<section className="px-4 pb-24">*/}
+                {/*    <div className="max-w-6xl mx-auto rounded-2xl border bg-card/50 shadow-2xl overflow-hidden aspect-video relative group border-primary/10">*/}
+                {/*        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-transparent pointer-events-none" />*/}
+                {/*        /!* Mock Dashboard UI UI Elements *!/*/}
+                {/*        <div className="p-8 space-y-6 opacity-80 group-hover:opacity-100 transition-opacity">*/}
+                {/*            <div className="flex items-center justify-between border-b pb-4">*/}
+                {/*                <div className="h-4 w-32 bg-muted rounded animate-pulse" />*/}
+                {/*                <div className="flex gap-2">*/}
+                {/*                    <div className="h-8 w-8 bg-muted rounded-full" />*/}
+                {/*                    <div className="h-8 w-8 bg-muted rounded-full" />*/}
+                {/*                </div>*/}
+                {/*            </div>*/}
+                {/*            <div className="grid grid-cols-4 gap-4">*/}
+                {/*                {[1,2,3,4].map(i => (*/}
+                {/*                    <div key={i} className="h-24 border rounded-xl bg-background/50 p-4 space-y-2">*/}
+                {/*                        <div className="h-2 w-12 bg-muted rounded" />*/}
+                {/*                        <div className="h-6 w-16 bg-muted rounded" />*/}
+                {/*                    </div>*/}
+                {/*                ))}*/}
+                {/*            </div>*/}
+                {/*            <div className="h-64 border rounded-xl bg-background/50 w-full" />*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</section>*/}
 
                 {/* Feature Grid: Problem/Solution */}
                 <section className="bg-muted/30 border-y py-24 px-4">
