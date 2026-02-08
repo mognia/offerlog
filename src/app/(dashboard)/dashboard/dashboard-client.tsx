@@ -182,11 +182,11 @@ export default function DashboardClient() {
     // Filter States
     const [fromLocal, setFromLocal] = React.useState(() => {
         const d = new Date();
-        d.setDate(d.getDate() - 30);
+        d.setDate(d.getDate() - 180);
         return toLocalDateString(d);
     });
     const [toLocal, setToLocal] = React.useState(() => toLocalDateString(new Date()));
-    const [status, setStatus] = React.useState("OPEN");
+    const [status, setStatus] = React.useState("");
     const [workMode, setWorkMode] = React.useState("");
     const [sourceBucket, setSourceBucket] = React.useState("");
     const [sourceDraft, setSourceDraft] = React.useState("");
