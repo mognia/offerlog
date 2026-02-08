@@ -22,7 +22,7 @@ enum ApplicationStatus {
 
 enum WorkMode {
   ONSITE
-  HUBRID
+  HYBRID
   REMOTE
 }
 
