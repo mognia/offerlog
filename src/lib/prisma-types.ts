@@ -5,4 +5,5 @@ export {
     InterviewChannel,
     MessageDirection,
     EventOutcome,
+    Prisma
 } from "../../generated/prisma/client";

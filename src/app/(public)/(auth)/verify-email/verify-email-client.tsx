@@ -6,14 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { useApiQuery } from "@/hooks/use-api-query";
 import { useRef } from "react";
+import { Mail, CheckCircle, XCircle, Loader2, Target } from "lucide-react";
 
 type Props = { token?: string; email?: string };
 
 export default function VerifyEmailClient({ token, email }: Props) {
-    // Use a ref to ensure we only verify once per session, even in Strict Mode
     const hasCalled = useRef(false);
 
-    // Only run the query if we actually have a token
     const { data, loading } = useApiQuery(
         () => {
             if (!token || hasCalled.current) return Promise.resolve(null);
@@ -23,71 +22,62 @@ export default function VerifyEmailClient({ token, email }: Props) {
         [token]
     );
 
-    // Helper to determine the UI state clearly
     const isVerifying = !!token && loading;
     const isSuccess = !!data;
-    const isError = !isSuccess;
-    const isWaitingForUser = !token; // User just signed up, needs to click email
+    const isError = !!token && !loading && !data;
+    const isWaitingForUser = !token;
 
-    // Dynamic Content Mapping
-    const content = {
-        verifying: {
-            title: "Verifying email...",
-            desc: "This should only take a second.",
-        },
-        success: {
-            title: "Email verified",
-            desc: "Your account is verified, you can sign in now.",
-        },
-        error: {
-            title: "Verification failed",
-            desc: "The verification link is invalid or expired.",
-        },
-        waiting: {
-            title: "Check your inbox",
-            desc: "We sent you a verification link. Open it to activate your account.",
-        },
-    };
-
-    const current = isVerifying ? content.verifying
-        : isSuccess ? content.success
-            : isError ? content.error
-                : content.waiting;
+    const current = isVerifying
+        ? { title: "Verifying...", desc: "Checking your unique token.", icon: <Loader2 className="h-12 w-12 text-primary animate-spin" />, color: "bg-primary/10" }
+        : isSuccess
+            ? { title: "Verified", desc: "Your identity is confirmed.", icon: <CheckCircle className="h-12 w-12 text-emerald-500" />, color: "bg-emerald-500/10" }
+            : isError
+                ? { title: "Invalid Link", desc: "This link has expired or is broken.", icon: <XCircle className="h-12 w-12 text-destructive" />, color: "bg-destructive/10" }
+                : { title: "Check Inbox", desc: "We sent a link to activate your account.", icon: <Mail className="h-12 w-12 text-primary" />, color: "bg-primary/10" };
 
     return (
-        <Card className="w-full max-w-md shadow-sm">
-            <CardHeader className="space-y-2">
-                <CardTitle className="text-2xl">{current.title}</CardTitle>
-                <CardDescription>{current.desc}</CardDescription>
-            </CardHeader>
+        <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
+            <div className="mb-8 flex flex-col items-center gap-2 opacity-50">
+                <Target className="h-8 w-8" />
+                <h1 className="text-lg font-bold tracking-tighter">OfferLog</h1>
+            </div>
 
-            <CardContent className="space-y-4">
-                {isWaitingForUser && email && (
-                    <div className="rounded-lg border p-3 text-sm bg-muted/50">
-                        Sent to <span className="font-medium text-foreground">{email}</span>
-                    </div>
-                )}
-
-                {isSuccess && (
-                    <Button asChild className="w-full">
-                        <Link href="/login">Sign in</Link>
-                    </Button>
-                )}
-
-                {(isError || isWaitingForUser) && (
-                    <Button asChild variant="secondary" className="w-full">
-                        <Link href={`/resend-verify${email ? `?email=${encodeURIComponent(email)}` : ""}`}>
-                            Resend verification email
-                        </Link>
-                    </Button>
-                )}
-
-                <div className="text-center pt-2">
-                    <Link className="text-sm underline underline-offset-4 text-muted-foreground hover:text-primary" href="/login">
-                        Back to sign in
-                    </Link>
+            <Card className="w-full max-w-md border-2 shadow-none rounded-2xl overflow-hidden text-center">
+                <div className={`flex justify-center py-10 ${current.color}`}>
+                    {current.icon}
                 </div>
-            </CardContent>
-        </Card>
+
+                <CardHeader className="space-y-2 pb-8">
+                    <CardTitle className="text-3xl font-black tracking-tight">{current.title}</CardTitle>
+                    <CardDescription className="text-sm font-medium px-4">{current.desc}</CardDescription>
+                </CardHeader>
+
+                <CardContent className="space-y-6 pb-10">
+                    {isWaitingForUser && email && (
+                        <div className="mx-auto max-w-[280px] rounded-lg border-2 border-dashed p-3 text-xs font-mono bg-muted/30">
+                            Sent to: {email}
+                        </div>
+                    )}
+
+                    {isSuccess ? (
+                        <Button asChild className="w-full h-12 rounded-xl font-bold shadow-lg shadow-primary/20 transition-transform active:scale-95">
+                            <Link href="/login">Launch Dashboard</Link>
+                        </Button>
+                    ) : (
+                        <Button asChild variant="secondary" className="w-full h-12 rounded-xl font-bold border-2">
+                            <Link href={`/resend-verify${email ? `?email=${encodeURIComponent(email)}` : ""}`}>
+                                {isError ? "Request New Link" : "Resend Verification Email"}
+                            </Link>
+                        </Button>
+                    )}
+
+                    <div className="pt-2">
+                        <Link className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors" href="/login">
+                            ← Back to Sign In
+                        </Link>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
     );
 }
