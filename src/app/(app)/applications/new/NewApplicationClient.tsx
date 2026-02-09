@@ -81,7 +81,8 @@ export default function NewApplicationClient() {
                 setErr(json.error || "Failed to create application");
                 return;
             }
-            router.push(`/applications/${json.application.id}`);
+            const bp = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+            router.push(`${bp}/applications/${json.application.id}`);
         } catch (e) {
             setErr("A network error occurred.");
         } finally {
