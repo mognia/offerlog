@@ -49,10 +49,7 @@ export function ActionLists({ loading, data }: ActionListsProps) {
                                     <div
                                         key={item.appId + item.followUpAt}
                                         className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors cursor-pointer group"
-                                        onClick={() => {
-                                            const bp = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-                                            router.push(`${bp}/applications/${item.appId}?tab=pipeline`)
-                                        }}
+                                        onClick={() => router.push(`/applications/${item.appId}?tab=pipeline`)}
                                     >
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center gap-2 mb-1">

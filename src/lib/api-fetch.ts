@@ -1,3 +1,4 @@
+
 export class ApiError extends Error {
     status: number;
     details?: unknown;
@@ -9,45 +10,25 @@ export class ApiError extends Error {
     }
 }
 
-type ApiOk<T> = { ok: true } & T;
+type ApiOk<T> = {ok:true} & T;
 type ApiFail = { ok: false; message?: string; error?: string; details?: unknown };
 
-function pickMessage(payload: unknown, fallback: string) {
+function pickMessage(payload: unknown, fallback: string){
+    // If the API returned nothing or just a plain string/number, it gives up and returns the backup.
     if (!payload || typeof payload !== "object") return fallback;
+    // This tells TypeScript: "Treat this object as if it might follow the ApiFail structure."
     const p = payload as Partial<ApiFail>;
     return p.message || p.error || fallback;
 }
-
-function getBasePath() {
-    // Set this in Vercel + local .env:
-    // NEXT_PUBLIC_BASE_PATH=/offerlog
-    const bp = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-    if (!bp) return "";
-    return bp.endsWith("/") ? bp.slice(0, -1) : bp;
-}
-
-function withBasePath(input: RequestInfo | URL) {
-    // Only rewrite string paths like "/api/..."
-    if (typeof input !== "string") return input;
-
-    // Only rewrite root-relative paths
-    if (!input.startsWith("/")) return input;
-
-    const basePath = getBasePath();
-    if (!basePath) return input;
-
-    // Avoid double-prefixing if someone already passed "/offerlog/..."
-    if (input === basePath || input.startsWith(basePath + "/")) return input;
-
-    return basePath + input;
-}
-
 /**
  * Calls your Next.js API routes, expects JSON, throws ApiError on non-2xx.
  * Always sends cookies (DB-backed sessions) via credentials: "include".
  */
-export async function apiFetch<T>(input: RequestInfo | URL, init?: RequestInit): Promise<ApiOk<T>> {
-    const res = await fetch(withBasePath(input), {
+export async function apiFetch<T>(
+    input: RequestInfo | URL,
+    init?: RequestInit,
+): Promise<ApiOk<T>> {
+    const res = await fetch(input, {
         ...init,
         headers: {
             "Content-Type": "application/json",

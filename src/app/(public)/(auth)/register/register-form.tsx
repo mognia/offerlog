@@ -44,9 +44,8 @@ export default function RegisterForm() {
             }),
             {
                 onSuccess: () => {
-                    const bp = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
                     const email = getValues("email");
-                    router.push(`${bp}/verify-email?email=${encodeURIComponent(email)}`);
+                    router.push(`/verify-email?email=${encodeURIComponent(email)}`);
                 },
             }
         );
