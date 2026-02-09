@@ -23,7 +23,6 @@ type FormValues = z.infer<typeof schema>;
 type LoginResponse = { ok: true; user?: { id: string; email: string } };
 
 export default function LoginForm() {
-    console.log("BASE_PATH", process.env.NEXT_PUBLIC_BASE_PATH);
     const router = useRouter();
     const { run, loading } = useApiAction<LoginResponse>();
     const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
