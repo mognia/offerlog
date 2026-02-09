@@ -37,8 +37,9 @@ export function ActionLists({ loading, data }: ActionListsProps) {
                         </Badge>
                     </div>
                 </CardHeader>
-                <ScrollArea className="flex-1">
-                    <CardContent className="p-0">
+                <CardContent className="p-0 flex-1 min-h-0">
+
+                <ScrollArea className="h-full">
                         {allDue.length === 0 ? (
                             <div className="p-8">
                                 <EmptyState title="All clear!" description="You have no pending follow-ups for today." />
@@ -70,9 +71,10 @@ export function ActionLists({ loading, data }: ActionListsProps) {
                                 ))}
                             </div>
                         )}
-                    </CardContent>
                 </ScrollArea>
-            </Card>
+            </CardContent>
+
+        </Card>
 
             {/* Risk Panel */}
             <Card className="rounded-2xl border shadow-sm flex flex-col h-[400px]">
@@ -87,8 +89,9 @@ export function ActionLists({ loading, data }: ActionListsProps) {
                         </Badge>
                     </div>
                 </CardHeader>
-                <ScrollArea className="flex-1">
-                    <CardContent className="p-0">
+                <CardContent className="p-0 flex-1 min-h-0">
+
+                <ScrollArea className="h-full">
                         {allRisks.length === 0 ? (
                             <div className="p-8">
                                 <EmptyState title="Pipeline Healthy" description="No stale applications detected." />
@@ -119,8 +122,9 @@ export function ActionLists({ loading, data }: ActionListsProps) {
                                 ))}
                             </div>
                         )}
-                    </CardContent>
                 </ScrollArea>
+                    </CardContent>
+
             </Card>
         </div>
     );

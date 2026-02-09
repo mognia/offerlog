@@ -75,7 +75,7 @@ export function ChartsSection({
                     <Filter className="h-4 w-4" /> Pipeline Health
                 </h3>
 
-                <Card className="rounded-2xl border shadow-sm h-full">
+                <Card className="rounded-2xl border shadow-sm ">
                     <CardHeader>
                         <CardTitle className="text-base font-semibold">Conversion Funnel</CardTitle>
                     </CardHeader>
