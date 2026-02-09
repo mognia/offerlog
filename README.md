@@ -4,6 +4,9 @@
 **OfferLog** is a production-grade job application tracker designed to behave like a real product, not a demo CRUD app.  
 It eliminates job-hunt data chaos by enforcing a strict interview pipeline, automatic data hygiene, and analytics that show *exactly* where your funnel is leaking.
 
+- Demo User Email for Login = demo@offerlog.dev.
+- Demo User Pass for Login = demo1234.
+ 
 ---
 
 ## ✨ Key Features
