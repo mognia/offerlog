@@ -100,8 +100,7 @@ export function ActionLists({ loading, data }: ActionListsProps) {
                                         key={item.appId}
                                         className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors cursor-pointer group"
                                         onClick={() => {
-                                            const bp = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-                                            router.push(`${bp}/applications/${item.appId}`)
+                                            router.push(`/applications/${item.appId}`)
                                         }}
                                     >
                                         <div className="min-w-0 flex-1">

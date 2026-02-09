@@ -53,8 +53,7 @@ export default function LoginForm() {
                 }
             },
             { onSuccess: () => {
-                    const bp = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-                    router.push(`${bp}/applications`);
+                    router.push(`/applications`);
                 } }
         );
     }
